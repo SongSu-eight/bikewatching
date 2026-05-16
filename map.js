@@ -150,6 +150,13 @@ map.on('load', async () => {
       .style('--departure-ratio', (d) =>
         stationFlow(d.departures / d.totalTraffic),
       ); // Update departure ratio for styling
+    circles
+      .select('title')
+      .text(
+        (d) =>
+          `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`
+      );
+
   }  
 
   const stations = computeStationTraffic(jsonData.data.stations, trips);
@@ -189,7 +196,10 @@ map.on('load', async () => {
     .enter()
     .append('circle')
     .attr('r', (d) => radiusScale(d.totalTraffic)) // Radius of the circle
-    .attr('fill', 'steelblue') // Circle fill color
+    // .attr('fill', 'steelblue') // Circle fill color
+    .style('--departure-ratio', (d) =>
+      stationFlow(d.departures / d.totalTraffic),
+    )
     .attr('stroke', 'white') // Circle border color
     .attr('stroke-width', 1) // Circle border thickness
     .attr('opacity', 0.8) // Circle opacity
@@ -199,10 +209,7 @@ map.on('load', async () => {
       .append('title')
       .text(
         `${d.totalTraffic} trips (${d.departures} departures, ${d.arrivals} arrivals)`
-      )
-    .style('--departure-ratio', (d) =>
-      stationFlow(d.departures / d.totalTraffic),
-    );
+      );
   });
   
   function updatePositions() {
